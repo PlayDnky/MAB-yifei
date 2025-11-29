@@ -27,18 +27,6 @@ target 'Runner' do
 end
 
 post_install do |installer|
-# Debugging: Print which pods have the -G flag
-  installer.pods_project.targets.each do |target|
-    puts "🔍 Checking pod: #{target.name}"
-    target.build_configurations.each do |config|
-      flags = config.build_settings['OTHER_CFLAGS'] || []
-      if flags.any? { |f| f.include?('-G') }
-        puts "⚠️  Found -G flag in #{target.name}: #{flags}"
-      end
-    end
-  end
-
-
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
     
@@ -46,26 +34,20 @@ post_install do |installer|
       # Force iOS 13.0 for all pods
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
-      # CRITICAL: Force modern C++ standard and disable problematic flags
+      # Force modern C++ standard
       config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
       config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
       
-      # Remove legacy debugging flags that cause -G errors
+      # CRITICAL FIX: Allow non-modular includes for Firebase
+      config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      
+      # Disable debug symbols to prevent -G flag errors
       config.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
       config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
       
-      # Suppress C++ warnings that might escalate to errors
+      # Suppress warnings
       config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = 'YES'
       config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENTS'] = 'NO'
-      
-      # Explicitly disable problematic optimization flags
-      xcconfig_path = config.base_configuration_reference.real_path
-      if xcconfig_path && File.exist?(xcconfig_path)
-        xcconfig = File.read(xcconfig_path)
-        # Remove any -G flags that might be in pod configs
-        xcconfig_new = xcconfig.gsub(/-G\d*/, '')
-        File.write(xcconfig_path, xcconfig_new) if xcconfig != xcconfig_new
-      end
     end
   end
 end
