@@ -310,7 +310,7 @@ class AppTheme {
       ),
       
       // Tab Bar Theme
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         labelColor: AppColors.primary,
         unselectedLabelColor: AppColors.onSurfaceVariant,
         labelStyle: AppTextStyles.textTheme.titleSmall?.copyWith(
