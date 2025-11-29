@@ -27,6 +27,18 @@ target 'Runner' do
 end
 
 post_install do |installer|
+# Debugging: Print which pods have the -G flag
+  installer.pods_project.targets.each do |target|
+    puts "🔍 Checking pod: #{target.name}"
+    target.build_configurations.each do |config|
+      flags = config.build_settings['OTHER_CFLAGS'] || []
+      if flags.any? { |f| f.include?('-G') }
+        puts "⚠️  Found -G flag in #{target.name}: #{flags}"
+      end
+    end
+  end
+
+
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
     
