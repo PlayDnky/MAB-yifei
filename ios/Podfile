@@ -1,6 +1,14 @@
+# Uncomment this line to define a global platform for your project
 platform :ios, '13.0'
 
+# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
 
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
@@ -24,30 +32,25 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-    
     target.build_configurations.each do |config|
-      # iOS 13.0 deployment target
+      # Force iOS 13.0 minimum deployment target
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
-      # C++17 standard
-      config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
-      config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
-      
-      #  CRITICAL FIX: Allow Firebase's non-modular umbrella header
+      # 🔥 CRITICAL: Allow Firebase's non-modular umbrella header
       config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
       
-      # Disable debug symbols (prevents -G flag errors)
-      config.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
-      config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
-      
-      # Suppress warnings
-      config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = 'YES'
-      config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENTS'] = 'NO'
+      # Force C++17 standard for audio dependencies
+      config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+      config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
     end
   end
 end
