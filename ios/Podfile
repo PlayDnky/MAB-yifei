@@ -31,17 +31,17 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
     
     target.build_configurations.each do |config|
-      # Force iOS 13.0 for all pods
+      # iOS 13.0 deployment target
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
-      # Force modern C++ standard
+      # C++17 standard
       config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
       config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
       
-      # CRITICAL FIX: Allow non-modular includes for Firebase
+      #  CRITICAL FIX: Allow Firebase's non-modular umbrella header
       config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
       
-      # Disable debug symbols to prevent -G flag errors
+      # Disable debug symbols (prevents -G flag errors)
       config.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
       config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
       
