@@ -69,16 +69,20 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>MAB uses location to help identify nearby mushroom cultivation sites and optimize environmental settings based on your region.</string>
     
-    <!-- Firebase Configuration -->
+    <!-- Firebase Configuration: CRITICAL for initialization -->
     <key>FirebaseAppDelegateProxyEnabled</key>
     <true/>
     
-    <!-- Background Modes: MQTT keepalive + Firebase Cloud Messaging (NO processing mode) -->
+    <!-- Background Modes: MQTT keepalive + Firebase Cloud Messaging -->
     <key>UIBackgroundModes</key>
     <array>
         <string>fetch</string>
         <string>remote-notification</string>
     </array>
+    
+    <!-- Export Compliance: Skip encryption documentation popup -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
     
     <!-- App Transport Security: MQTT broker (api.milloserver.uk:8883 with TLS) -->
     <key>NSAppTransportSecurity</key>
