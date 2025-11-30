@@ -73,12 +73,11 @@
     <key>FirebaseAppDelegateProxyEnabled</key>
     <true/>
     
-    <!-- Background Modes: MQTT keepalive + Firebase Cloud Messaging -->
+    <!-- Background Modes: MQTT keepalive + Firebase Cloud Messaging (NO processing mode) -->
     <key>UIBackgroundModes</key>
     <array>
         <string>fetch</string>
         <string>remote-notification</string>
-        <string>processing</string>
     </array>
     
     <!-- App Transport Security: MQTT broker (api.milloserver.uk:8883 with TLS) -->
