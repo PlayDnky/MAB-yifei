@@ -169,32 +169,51 @@ Future<void> initNotifications() async {
   const InitializationSettings initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
 
+  Future<void> initNotifications() async {
+  debugPrint('🔔 Setting up local notifications with action handlers...');
+  
+  // Android settings
+  const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  // iOS/macOS settings
+  const DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
+  // Combined platform settings
+  const InitializationSettings initializationSettings =
+      InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS,
+      );
+
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (NotificationResponse response) async {
       debugPrint('📲 Notification action received: ${response.actionId}');
       
       if (response.actionId == 'dismiss') {
-        // User clicked "Dismiss" button
         await AlarmService().dismissAlarm();
       } else if (response.actionId == 'snooze') {
-        // User clicked "Snooze" button
         final context = navigatorKey.currentContext;
         if (context != null && context.mounted) {
-          // App is in foreground - show picker dialog
           showDialog(
             context: context,
             builder: (context) => const AlarmSnoozeDialog(),
           );
         } else {
-          // App is in background - use default 5 minutes
           await AlarmService().snoozeAlarm(const Duration(minutes: 5));
         }
       }
     },
   );
   
-  debugPrint('✅ Notification action handlers set up');
+  debugPrint('✅ iOS notification settings initialized');
+}
 }
 
 
