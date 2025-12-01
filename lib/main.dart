@@ -13,7 +13,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:audio_session/audio_session.dart'; // For audio session management
 
 // Core imports
-import 'core/constants/firebase_options.dart';
+import 'package:flutter_application_final/core/constants/firebase_options.dart';
 import 'core/theme/app_theme.dart';
 
 // Dependency Injection
