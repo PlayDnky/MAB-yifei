@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '243707806517',
     projectId: 'mab-fyp',
     storageBucket: 'mab-fyp.firebasestorage.app',
-    iosBundleId: 'com.example.flutterApplicationFinal',
+    iosBundleId: 'com.example.flutterApplicationFinalMAB',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '243707806517',
     projectId: 'mab-fyp',
     storageBucket: 'mab-fyp.firebasestorage.app',
-    iosBundleId: 'com.example.flutterApplicationFinal',
+    iosBundleId: 'com.example.flutterApplicationFinalMAB',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
